@@ -19,6 +19,9 @@ class ItemInfo:
     name = ""
     description = ""
     
+    '''
+    KalturaBaseEntry item
+    '''
     def __init__(self, item):
         self.downloadUrl = item.getDownloadUrl()
         self.thumbUrl = item.getThumbnailUrl()
