@@ -2,7 +2,7 @@ import sys
 
 class ItemInfoList:
     
-    _itemList = []
+    itemList = []
     
     def __init__(self, itemList): 
         self._itemList = itemList
