@@ -2,11 +2,6 @@ import sys
 import xbmcgui
 import xbmcplugin
 
-sys.path.append('/home/kobi/.kodi/addons/python/KalturaClient/')
-sys.path.append('/home/kobi/.kodi/addons/python/')
-
-
-
 from addOnSettings import *
 from GetBaseList import *
 from itemInfo import *
