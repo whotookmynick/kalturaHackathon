@@ -31,11 +31,11 @@ class addOnSettings:
     def getKS(self):
         return self.get('ks');
 
-	def getEmail(self):
-		return self.get('Email');
+    def getEmail(self):
+        return self.get('Email');
 
-	def getPassword(self):
-		return self.get('Password');
+    def getPassword(self):
+        return self.get('Password');
 
     def getServiceUrl(self):
         return self.get('ServiceUrl')
