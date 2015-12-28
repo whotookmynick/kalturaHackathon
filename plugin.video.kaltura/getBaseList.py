@@ -16,16 +16,12 @@ class GetBaseList:
     final_object_content_length = 0
     final_object_content = ""
 
-    def __init__(self, user_email, password, service_url, page_size=500):
-        # if (len (ks) == 0 ):
-            # raise GetBaseList ("KS cannot be empty.")
+    def __init__(self, user_email, password, service_url, page_index=1, page_size=10):
         self.serviceUrl = service_url
-        self.userEmail = user_email
-        self.password = password
-        # self.KS = ks
-        if (page_size < 1):
-            raise GetBaseList ("Pager cannot be less than 1")
-        self.page_size = page_size
+-       self.userEmail = user_email
+-       self.password = password
+-       self.page_size = page_size
+        self.page_index = page_index
         self.createPartnerEntryList()
 
 
@@ -34,13 +30,12 @@ class GetBaseList:
         # create pager
         pager = Client.KalturaFilterPager()
         pager.pageSize = self.page_size
-        pager.pageIndex = 0
-        
-        #getKs
-        authenticator = KalturaAuthenticator(self.userEmail, self.password, self.serviceUrl)
-        KS = authenticator.getKs()
+        pager.pageIndex = self.page_index
         
         # set ks pm client
+        authenticator = KalturaAuthenticator(self.userEmail, self.password, self.serviceUrl)
+        KS = authenticator.getKs()
++
         kalturaConfig = KalturaConfiguration()
         kalturaConfig.serviceUrl = self.serviceUrl
         self.client_handle = KalturaClient(kalturaConfig)
@@ -60,16 +55,10 @@ class GetBaseList:
 # Main
 if __name__=="__main__":
     try:
-        if len(sys.argv) < 3:
-            print "Not enough parameters were given. Must give email and password, service-url is optional"
-            exit (1)
-        user_email = sys.argv[1]
-        password = sys.argv[2]
-        service_url = "http://www.kaltura.com"
-        if len(sys.argv) > 3:
-            service_url = sys.argv[3]
-            
-        base_list = GetBaseList(user_email, password, service_url, 5)
+        if len(sys.argv) < 2:
+            print "No parameters were given. Must have a proper KS."
+        ks = sys.argv[1]
+        base_list = GetBaseList(ks, 5)
         # base_list = GetBaseList("MjVmMDI4ZTFjMDQ4ZjA4ZTZhNDc0ZjRkMWJjMzJjYzkxNjM0ZTYyOHwxMDI7MTAyOzE0NTEyOTYzNzM7MjsxNDUxMjA5OTczLjI2NTU7a29iaS5taWNoYWVsaUBrYWx0dXJhLmNvbTsqLGRpc2FibGVlbnRpdGxlbWVudDs7", 5)
         base_list.getPartnerEntryList()
 
