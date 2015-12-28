@@ -3,4 +3,7 @@
     <setting id="Email" 	type="text" default="" label="Email"/>
     <setting id="Password" 	type="text" default="" option="hidden" enable="!eq(-1,)" label="Password" />
     <setting id="ks"		type="text" default="Zjc5YmFhNDdhYmNlOTMxMzFmMjA1YjQ3MzNmM2Q2OWVlNzY2ZDY2ZHwxNjU2NTAxOzE2NTY1MDE7MTQ1MTMyMDg4NDsyOzE0NTEyMzQ0ODQuMjUzNDthZG1pbjtkaXNhYmxlZW50aXRsZW1lbnQ7Ow==" label="ks" />
+        
+    <setting id="ServiceUrl" type="text" default="www.kaltura.com" label="ServiceUrl" />
+    
 </settings>
