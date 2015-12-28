@@ -19,38 +19,67 @@ addon_home      = addon.getAddonInfo('path').decode(UTF8)
 addon_fanart  	= xbmc.translatePath(os.path.join(addon_home, 'fanart.jpg'))
 next_icon     	= xbmc.translatePath(os.path.join(addon_home, 'resources','icons','next.png'))
 
-page_indx_list 	= addon_args.get('page', [1])
-page_indx 		= int(page_indx_list[0])
 
 def build_url(query):
     return base_url + '?' + urllib.urlencode(query)
 
-xbmcplugin.setContent(addon_handle, 'movies')
-kaltura_play_list   = GetBaseList(addon_settings.getEmail(), 
-								  addon_settings.getPassword(), 
-								  addon_settings.getServiceUrl(), page_indx).getPartnerEntryList()
-								  
-info_object         = ItemInfoList(kaltura_play_list);
+def build_pages(type):
+	page_indx_list 	= addon_args.get('page', [1])
+	page_indx 		= int(page_indx_list[0])
+	page_size 		= 10
 
-for i in range(len(kaltura_play_list)):
-    item_info       = info_object.getItemInfo(i);
-    url             = item_info.downloadUrl
-    kodi_list_item  = xbmcgui.ListItem(item_info.name, iconImage='DefaultVideo.png')
-    kodi_list_item.setArt({'thumb': item_info.thumbUrl, 'fanart':addon.getAddonInfo('fanart')})
-    kodi_item_info  = KalturaItemInfoAdapter(kaltura_play_list[i])
-    kodi_item_info.setKodiItemInfo(kodi_list_item)
-    kodi_stream_info = KalturaStreamInfoAdapter(kaltura_play_list[i])
-    kodi_stream_info.addKodiStreamItemInfo(kodi_list_item)
-    xbmcplugin.addDirectoryItem(handle=addon_handle, url=item_info.downloadUrl, listitem=kodi_list_item)
+	xbmcplugin.setContent(addon_handle, 'movies')
+	kaltura_play_list_obj 	= GetBaseList(addon_settings.getEmail(), addon_settings.getPassword(), addon_settings.getServiceUrl())
+	kaltura_play_list_obj.createPartnerEntryList(type, page_indx, page_size)	  
+	kaltura_play_list 		= kaltura_play_list_obj.getPartnerEntryList()
+	info_object         	= ItemInfoList(kaltura_play_list);
+
+	for i in range(len(kaltura_play_list)):
+		item_info       = info_object.getItemInfo(i);
+		url             = item_info.downloadUrl
+		kodi_list_item  = xbmcgui.ListItem(item_info.name, iconImage='DefaultVideo.png')
+		kodi_list_item.setArt({'thumb': item_info.thumbUrl, 'fanart':addon.getAddonInfo('fanart')})
+		kodi_item_info  = KalturaItemInfoAdapter(kaltura_play_list[i])
+		kodi_item_info.setKodiItemInfo(kodi_list_item)
+		kodi_stream_info = KalturaStreamInfoAdapter(kaltura_play_list[i])
+		kodi_stream_info.addKodiStreamItemInfo(kodi_list_item)
+		xbmcplugin.addDirectoryItem(handle=addon_handle, url=item_info.downloadUrl, listitem=kodi_list_item)
+		
+
+	if len(kaltura_play_list) == page_size:
+		name = '[COLOR blue]Next Page >>' + str(((page_indx - 1) * page_size) + 1) + '-' + str(((page_indx - 1) * page_size) + page_size) + '[/COLOR]' 
+		page_indx = page_indx + 1
+		url = build_url({'page': page_indx, 'mode': type})
+		kodi_list_item = xbmcgui.ListItem(name, '', next_icon, None)
+		kodi_list_item.setProperty('fanart_image', addon_fanart)
+		xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=kodi_list_item, isFolder=True)
+
+	xbmcplugin.endOfDirectory(addon_handle)
+
+def build_home():
+	mode = addon_args.get('mode', None)
 	
+	if mode is None:
+		url = build_url({'mode': 'VOD'})
+		li = xbmcgui.ListItem('VOD', iconImage='DefaultFolder.png')
+		xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-	
-name = '[COLOR blue]Next Page >>' + str(((page_indx - 1) * 10) + 1) + '-' + str(((page_indx - 1) * 10) + 10) + '[/COLOR]' 
-page_indx = page_indx + 1
-url = build_url({'page': page_indx})
+		url = build_url({'mode': 'Live!'})
+		li = xbmcgui.ListItem('Live!', iconImage='DefaultFolder.png')
+		xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-kodi_list_item = xbmcgui.ListItem(name, '', next_icon, None)
-kodi_list_item.setProperty('fanart_image', addon_fanart)
-xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=kodi_list_item, isFolder=True)
+		url = build_url({'mode': 'Audio'})
+		li = xbmcgui.ListItem('Audio', iconImage='DefaultFolder.png')
+		xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
+		
+		url = build_url({'mode': 'Image'})
+		li = xbmcgui.ListItem('Image', iconImage='DefaultFolder.png')
+		xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
-xbmcplugin.endOfDirectory(addon_handle)
+		xbmcplugin.endOfDirectory(addon_handle)	
+	else:
+		build_pages(mode[0])
+		
+build_home();
+
+
