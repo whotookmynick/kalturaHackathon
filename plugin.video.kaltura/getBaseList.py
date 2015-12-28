@@ -47,9 +47,8 @@ class GetBaseList:
         self.client_handle.setKs(KS)
         
         # get entry list
-        filter = Client.KalturaMediaEntryFilter()
-        filter.typeEqual = Client.KalturaEntryType.MEDIA_CLIP
-        result = self.client_handle.media.list(filter, pager)
+        filter = Client.KalturaMediaEntryFilter(mediaTypeIn="1,2,5,6,201", statusIn="-1,-2,0,1,2,7,4")
+        result = self.client_handle.baseEntry.list(filter, pager)
         self.final_object_content = result.getObjects()
         self.final_object_content_length = len(self.final_object_content)
 
