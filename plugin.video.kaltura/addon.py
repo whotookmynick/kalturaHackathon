@@ -13,10 +13,13 @@ from kalturaStreamInfoAdapter   import *
 addon_handle        = int(sys.argv[1])
 addon_settings      = addOnSettings()
 kaltura_addon_ks    = addon_settings.getKS()
+kaltura_addon_user_email = addon_settings.getEmail()
+kaltura_addon_user_password = addon_settings.getPassword()
+kaltura_addon_service_url = addon_settings.getServiceUrl()
 kaltura_addon = xbmcaddon.Addon('plugin.video.kaltura')
 
 xbmcplugin.setContent(addon_handle, 'movies')
-kaltura_play_list   = GetBaseList(kaltura_addon_ks).getPartnerEntryList()
+kaltura_play_list   = GetBaseList(kaltura_addon_user_email, kaltura_addon_user_password, kaltura_addon_service_url).getPartnerEntryList()
 info_list           = ItemInfoList(kaltura_play_list);
 
 for i in range(len(kaltura_play_list)):

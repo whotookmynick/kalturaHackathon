@@ -37,5 +37,8 @@ class addOnSettings:
 	def getPassword(self):
 		return self.get('Password');
 
+    def getServiceUrl(self):
+        return self.get('ServiceUrl')
 
 
+        
