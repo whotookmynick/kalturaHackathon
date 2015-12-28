@@ -7,13 +7,9 @@ from kalturaAuthenticate import *
 
 class GetBaseList:
 
-    def __init__(self, user_email, password, service_url):
+    def __init__(self, ks, service_url):
         self.serviceUrl = service_url
-        self.userEmail = user_email
-        self.password = password
-        self.serviceUrl = service_url
-        authenticator = KalturaAuthenticator(self.userEmail, self.password, self.serviceUrl)
-        self.KS = authenticator.getKs()
+        self.KS = ks
         self.buildAddonToKalturaDict()
 		
     def buildAddonToKalturaDict(self):

@@ -19,7 +19,8 @@ addon_fanart  	= xbmc.translatePath(os.path.join(addon_home, 'fanart.jpg'))
 next_icon     	= xbmc.translatePath(os.path.join(addon_home, 'resources','icons','next.png'))
 type_map = kalturaToGenericTypeTranslate()
 
-play_list_obj 	= GetBaseList(addon_settings.getEmail(), addon_settings.getPassword(), addon_settings.getServiceUrl())
+authenticator = KalturaAuthenticator(addon_settings.getEmail(), addon_settings.getPassword(), addon_settings.getServiceUrl())
+play_list_obj 	= GetBaseList(authenticator.getKs(), addon_settings.getServiceUrl())
 
 def build_url(query):
     return base_url + '?' + urllib.urlencode(query)
@@ -32,13 +33,16 @@ def build_pages(type):
 	xbmcplugin.setContent(addon_handle, 'movies')
 	play_list_obj.createPartnerEntryList(type, page_indx, page_size)	  
 	kaltura_play_list 		= play_list_obj.getPartnerEntryList()
-	info_object         	= ItemInfoList(kaltura_play_list);
+	info_object         	= ItemInfoList(kaltura_play_list, addon_settings.getServiceUrl(), authenticator.getKs());
 
 	for i in range(len(kaltura_play_list)):
 		item_info       = info_object.getItemInfo(i);
 		url             = item_info.downloadUrl
 		kodi_list_item  = xbmcgui.ListItem(item_info.name, iconImage='DefaultVideo.png')
 		kodi_list_item.setArt({'thumb': item_info.thumbUrl, 'fanart':addon.getAddonInfo('fanart')})
+
+		if item_info.captionUrl != "":
+			kodi_list_item.setSubtitles([item_info.captionUrl])
 		kodi_item_info  = KalturaItemInfoAdapter(kaltura_play_list[i])
 		kodi_item_info.setKodiItemInfo(kodi_list_item)
 		kodi_stream_info = KalturaStreamInfoAdapter(kaltura_play_list[i])
