@@ -18,12 +18,11 @@ class GetBaseList:
 
     def __init__(self, user_email, password, service_url, page_index=1, page_size=10):
         self.serviceUrl = service_url
--       self.userEmail = user_email
--       self.password = password
--       self.page_size = page_size
+        self.userEmail = user_email
+        self.password = password
+        self.page_size = page_size
         self.page_index = page_index
         self.createPartnerEntryList()
-
 
     def createPartnerEntryList(self):
 
@@ -35,7 +34,7 @@ class GetBaseList:
         # set ks pm client
         authenticator = KalturaAuthenticator(self.userEmail, self.password, self.serviceUrl)
         KS = authenticator.getKs()
-+
+
         kalturaConfig = KalturaConfiguration()
         kalturaConfig.serviceUrl = self.serviceUrl
         self.client_handle = KalturaClient(kalturaConfig)

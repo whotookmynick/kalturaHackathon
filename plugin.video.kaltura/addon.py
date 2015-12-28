@@ -13,7 +13,7 @@ base_url 		= sys.argv[0]
 addon_handle    = int(sys.argv[1])
 addon_settings  = addOnSettings()
 addon_args 		= urlparse.parse_qs(sys.argv[2][1:])
-
+                                  
 addon           = xbmcaddon.Addon('plugin.video.kaltura')
 addon_home      = addon.getAddonInfo('path').decode(UTF8)
 addon_fanart  	= xbmc.translatePath(os.path.join(addon_home, 'fanart.jpg'))
@@ -36,7 +36,7 @@ for i in range(len(kaltura_play_list)):
     item_info       = info_object.getItemInfo(i);
     url             = item_info.downloadUrl
     kodi_list_item  = xbmcgui.ListItem(item_info.name, iconImage='DefaultVideo.png')
-    kodi_list_item.setArt({'thumb': item_info.thumbUrl, 'fanart':kaltura_addon.getAddonInfo('fanart')})
+    kodi_list_item.setArt({'thumb': item_info.thumbUrl, 'fanart':addon.getAddonInfo('fanart')})
     kodi_item_info  = KalturaItemInfoAdapter(kaltura_play_list[i])
     kodi_item_info.setKodiItemInfo(kodi_list_item)
     kodi_stream_info = KalturaStreamInfoAdapter(kaltura_play_list[i])
