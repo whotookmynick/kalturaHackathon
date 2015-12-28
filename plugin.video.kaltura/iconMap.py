@@ -3,7 +3,7 @@ import sys, os, xbmc, xbmcaddon
 
 class iconMap:
 	path = './.kodi/resources/icons'
-	types = {'playlist' : 'list-numbered-256-000000.png', 'clip' : 'film.ico', 'live' : 'live.PNG', 'blank' : 'blank.PNG', 'audio':'audio.png', 'image':'image.png'}
+	types = {'playlist' : 'list-numbered-256-000000.png', 'clip' : 'vod.jpg', 'live' : 'live.jpg', 'blank' : 'blank.PNG', 'audio':'audio.jpg', 'image':'image.jpg'}
 
 	# def __init__(self):
 	# 	# Dummy ctor
