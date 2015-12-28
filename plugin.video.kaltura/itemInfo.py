@@ -7,11 +7,30 @@ class ItemInfoList:
     itemList = []
     service_url = ""
     KS = ""
+    captionAssets = {}
     
     def __init__(self, itemList, service_url, ks): 
         self._itemList = itemList
         self.service_url = service_url
         self.KS = ks
+        
+        kalturaConfig = KalturaConfiguration()
+        kalturaConfig.serviceUrl = self.service_url
+        self.client_handle = KalturaClient(kalturaConfig)
+        self.client_handle.setKs(self.KS)
+        
+        #get all caption assets
+        entryIds = ""
+        for item in itemList:
+            entryIds = item.getId() + ","
+        filter = KalturaCaptionAssetFilter()
+        filter.entryIdIn = entryIds
+        captionAssetResult = self.client_handle.caption.captionAsset.list(filter, None)
+        for captionAsset in captionAssetResult.getObjects():
+            ItemInfoList.captionAssets[captionAsset.getId()] = captionAsset
+        
+        
+        
         
     def getItemInfo(self,index):
         item = ItemInfo(self._itemList[index], self.service_url, self.KS)
@@ -58,14 +77,8 @@ class ItemInfo:
         self.client_handle = KalturaClient(kalturaConfig)
         self.client_handle.setKs(self.KS)
         
-        filter = KalturaCaptionAssetFilter()
-        filter.entryIdEqual = item.getId()
-        result = self.client_handle.caption.captionAsset.list(filter, None)
-        print "result ["+str(result)+"]"
-        for obj in result.getObjects():
-            print "got caption ["+obj.getId()+"]"
-        if (result.totalCount > 0):
-            captionAssetItem = result.getObjects()[0]
+        if (item.getId() in ItemInfoList.captionAssets.keys()):
+            captionAssetItem = ItemInfoList.captionAssets[item.getId()]
             captionUrl = self.client_handle.caption.captionAsset.getUrl(captionAssetItem.getId())
             ret_val = captionUrl
             
