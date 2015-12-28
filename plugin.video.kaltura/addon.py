@@ -19,6 +19,8 @@ addon_fanart  	= xbmc.translatePath(os.path.join(addon_home, 'fanart.jpg'))
 next_icon     	= xbmc.translatePath(os.path.join(addon_home, 'resources','icons','next.png'))
 type_map = kalturaToGenericTypeTranslate()
 
+play_list_obj 	= GetBaseList(addon_settings.getEmail(), addon_settings.getPassword(), addon_settings.getServiceUrl())
+
 def build_url(query):
     return base_url + '?' + urllib.urlencode(query)
 
@@ -28,9 +30,8 @@ def build_pages(type):
 	page_size 		= 10
 
 	xbmcplugin.setContent(addon_handle, 'movies')
-	kaltura_play_list_obj 	= GetBaseList(addon_settings.getEmail(), addon_settings.getPassword(), addon_settings.getServiceUrl())
-	kaltura_play_list_obj.createPartnerEntryList(type, page_indx, page_size)	  
-	kaltura_play_list 		= kaltura_play_list_obj.getPartnerEntryList()
+	play_list_obj.createPartnerEntryList(type, page_indx, page_size)	  
+	kaltura_play_list 		= play_list_obj.getPartnerEntryList()
 	info_object         	= ItemInfoList(kaltura_play_list);
 
 	for i in range(len(kaltura_play_list)):
