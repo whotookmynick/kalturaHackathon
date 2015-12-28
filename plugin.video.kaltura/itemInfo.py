@@ -27,6 +27,7 @@ class ItemInfo:
         self.thumbUrl = item.getThumbnailUrl()
         self.name = item.getName()
         self.description = item.getDescription()
+        self.mediaType = item.getMediaType()
         
         
         

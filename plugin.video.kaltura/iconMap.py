@@ -1,8 +1,8 @@
 #!/usr/bin/python
-import sys, os
+import sys, os, xbmc, xbmcaddon
 
 class iconMap:
-	path = './resources/icons'
+	path = './.kodi/resources/icons'
 	types = {'playlist' : 'list-numbered-256-000000.png', 'clip' : 'film.ico', 'live' : 'live.PNG', 'blank' : 'blank.PNG'}
 
 	# def __init__(self):
@@ -16,13 +16,15 @@ class iconMap:
 
 	def get_type_from_dict (self, needed_type):
 		keys = self.types.keys()
+		addon = xbmcaddon.Addon('plugin.video.kaltura')
+		addon_home = addon.getAddonInfo('path').decode('utf-8')
 		if (needed_type in keys):
-			file_name = self.path+'/'+self.types[needed_type]
+			file_name = xbmc.translatePath(os.path.join(addon_home, 'resources','icons',self.types[needed_type]))
 			readable = os.access(file_name, os.R_OK)
 			if (readable == True):
 				return file_name
 			else:
-				print "Not"
+				# print "Not"
 				return self.path+'/'+self.types['blank']
 		else:
 			return self.path+'/'+self.types['blank']
@@ -35,4 +37,4 @@ if __name__=="__main__":
 		print "Must get only one paramater of the type:" + str (ret_type.get_type_keys())
 		exit (1)
 	print ret_type.get_type_from_dict(sys.argv[1])
-exit (0)
+	exit (0)
