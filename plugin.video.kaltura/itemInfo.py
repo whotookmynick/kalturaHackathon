@@ -27,7 +27,7 @@ class ItemInfoList:
         filter.entryIdIn = entryIds
         captionAssetResult = self.client_handle.caption.captionAsset.list(filter, None)
         for captionAsset in captionAssetResult.getObjects():
-            ItemInfoList.captionAssets[captionAsset.getId()] = captionAsset
+            ItemInfoList.captionAssets[captionAsset.getEntryId()] = captionAsset
         
         
         
