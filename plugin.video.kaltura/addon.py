@@ -17,7 +17,7 @@ addon           = xbmcaddon.Addon('plugin.video.kaltura')
 addon_home      = addon.getAddonInfo('path').decode(UTF8)
 addon_fanart  	= xbmc.translatePath(os.path.join(addon_home, 'fanart.jpg'))
 next_icon     	= xbmc.translatePath(os.path.join(addon_home, 'resources','icons','next.png'))
-
+type_map = kalturaToGenericTypeTranslate()
 
 def build_url(query):
     return base_url + '?' + urllib.urlencode(query)
@@ -60,19 +60,25 @@ def build_home():
 	
 	if mode is None:
 		url = build_url({'mode': 'VOD'})
-		li = xbmcgui.ListItem('VOD', iconImage='DefaultFolder.png')
+		iconImage = type_map.mapKalturaType(1)
+
+		# li = xbmcgui.ListItem('VOD', iconImage='DefaultFolder.png')
+		li = xbmcgui.ListItem('VOD', iconImage=iconImage)
 		xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
 		url = build_url({'mode': 'Live!'})
-		li = xbmcgui.ListItem('Live!', iconImage='DefaultFolder.png')
+		iconImage = type_map.mapKalturaType(201)
+		li = xbmcgui.ListItem('Live!', iconImage=iconImage)
 		xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
 		url = build_url({'mode': 'Audio'})
-		li = xbmcgui.ListItem('Audio', iconImage='DefaultFolder.png')
+		iconImage = type_map.mapKalturaType(5)
+		li = xbmcgui.ListItem('Audio', iconImage=iconImage)
 		xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 		
 		url = build_url({'mode': 'Image'})
-		li = xbmcgui.ListItem('Image', iconImage='DefaultFolder.png')
+		iconImage = type_map.mapKalturaType(2)
+		li = xbmcgui.ListItem('Image', iconImage=iconImage)
 		xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li, isFolder=True)
 
 		xbmcplugin.endOfDirectory(addon_handle)	
