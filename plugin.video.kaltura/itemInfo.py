@@ -23,11 +23,12 @@ class ItemInfoList:
         entryIds = ""
         for item in itemList:
             entryIds = item.getId() + ","
-        filter = KalturaCaptionAssetFilter()
-        filter.entryIdIn = entryIds
-        captionAssetResult = self.client_handle.caption.captionAsset.list(filter, None)
-        for captionAsset in captionAssetResult.getObjects():
-            ItemInfoList.captionAssets[captionAsset.getEntryId()] = captionAsset
+        if (entryIds != ""):
+            filter = KalturaCaptionAssetFilter()
+            filter.entryIdIn = entryIds
+            captionAssetResult = self.client_handle.caption.captionAsset.list(filter, None)
+            for captionAsset in captionAssetResult.getObjects():
+                ItemInfoList.captionAssets[captionAsset.getEntryId()] = captionAsset
         
         
         
