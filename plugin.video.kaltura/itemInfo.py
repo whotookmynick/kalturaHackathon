@@ -22,16 +22,13 @@ class ItemInfoList:
         #get all caption assets
         entryIds = ""
         for item in itemList:
-            entryIds = item.getId() + ","
+            entryIds += item.getId() + ","
         if (entryIds != ""):
             filter = KalturaCaptionAssetFilter()
             filter.entryIdIn = entryIds
             captionAssetResult = self.client_handle.caption.captionAsset.list(filter, None)
             for captionAsset in captionAssetResult.getObjects():
                 ItemInfoList.captionAssets[captionAsset.getEntryId()] = captionAsset
-        
-        
-        
         
     def getItemInfo(self,index):
         item = ItemInfo(self._itemList[index], self.service_url, self.KS)
@@ -64,7 +61,9 @@ class ItemInfo:
 
         ret_val = ""
         if (item.dataUrl is None or item.dataUrl == ""):
+        # if (True):
             ret_val = self.service_url + "/p/" + str(item.getPartnerId()) + "/sp/"+ str(item.getPartnerId()) +"00/playManifest/entryId/"+ item.getId()+"/format/applehttp/protocol/http/a.m3u8"
+            #ret_val = "http://cfvod.kaltura.com/pd/p/811441/sp/81144100/serveFlavor/entryId/1_3c0opsqp/v/21/flavorId/1_abro5rey/fileName/multi-audio_(Source).mp4/name/a.mp4"
         else:
             ret_val = item.dataUrl
             
