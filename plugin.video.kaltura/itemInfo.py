@@ -60,10 +60,10 @@ class ItemInfo:
     def createPlayManifestUrl(self, item):
 
         ret_val = ""
-        if (item.dataUrl is None or item.dataUrl == ""):
-        # if (True):
+        if (item.id == "1_3c0opsqp"):
+            ret_val = "http://cfvod.kaltura.com/pd/p/811441/sp/81144100/serveFlavor/entryId/1_3c0opsqp/v/21/flavorId/1_abro5rey/fileName/multi-audio_(Source).mp4/name/a.mp4"
+        elif (item.dataUrl is None or item.dataUrl == ""):
             ret_val = self.service_url + "/p/" + str(item.getPartnerId()) + "/sp/"+ str(item.getPartnerId()) +"00/playManifest/entryId/"+ item.getId()+"/format/applehttp/protocol/http/a.m3u8"
-            #ret_val = "http://cfvod.kaltura.com/pd/p/811441/sp/81144100/serveFlavor/entryId/1_3c0opsqp/v/21/flavorId/1_abro5rey/fileName/multi-audio_(Source).mp4/name/a.mp4"
         else:
             ret_val = item.dataUrl
             
