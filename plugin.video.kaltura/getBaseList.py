@@ -35,6 +35,11 @@ class GetBaseList:
         filter = Client.KalturaMediaEntryFilter()
         print self.addon_to_kaltura_types[type]
         filter.mediaTypeEqual = self.addon_to_kaltura_types[type]
+        
+        #for hackathon presentation only
+        filter.tagsLike="hackathon"
+        
+        
         result = self.client_handle.baseEntry.list(filter, pager)
         self.final_object_content = result.getObjects()
         self.final_object_content_length = len(self.final_object_content)
