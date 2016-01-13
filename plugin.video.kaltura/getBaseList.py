@@ -37,7 +37,7 @@ class GetBaseList:
         filter.mediaTypeEqual = self.addon_to_kaltura_types[type]
         
         #for hackathon presentation only
-        filter.tagsLike="hackathon"
+        filter.tagsLike="k2k"
         
         
         result = self.client_handle.baseEntry.list(filter, pager)
